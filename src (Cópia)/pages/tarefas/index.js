@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Button, Box, Typography } from '@mui/material';
 import Tarefa from '../../components/tarefas';
 import { db } from '../../firebase';
-import { collection, query, orderBy, onSnapshot, addDoc, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore';
 import { getAuth, signOut } from 'firebase/auth';
 import '../../components/style.css';
 
@@ -11,8 +11,6 @@ const q = query(collection(db, 'tarefas'), orderBy('timestamp', 'desc'));
 function Tarefas() {
     const [Tarefas, setTarefas] = useState([]);
     const [input, setInput] = useState('');
-    const [editId, setEditId] = useState(null);
-    const [editInput, setEditInput] = useState('');
 
     useEffect(() => {
         const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -28,27 +26,12 @@ function Tarefas() {
         e.preventDefault();
         const auth = getAuth();
         const user = auth.currentUser;
-        if (editId) {
-            const tarefaDocRef = doc(db, 'tarefas', editId);
-            updateDoc(tarefaDocRef, {
-                tarefa: editInput,
-                timestamp: serverTimestamp(),
-            });
-            setEditId(null);
-            setEditInput('');
-        } else {
-            addDoc(collection(db, 'tarefas'), {
-                tarefa: input,
-                timestamp: serverTimestamp(),
-                createdBy: user ? user.email : 'unknown'
-            });
-        }
+        addDoc(collection(db, 'tarefas'), {
+            tarefa: input,
+            timestamp: serverTimestamp(),
+            createdBy: user ? user.email : 'unknown'
+        });
         setInput('');
-    };
-
-    const handleEdit = (id, currentTask) => {
-        setEditId(id);
-        setEditInput(currentTask);
     };
 
     const handleLogout = () => {
@@ -67,8 +50,7 @@ function Tarefas() {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                height: 'auto',
-                minHeight: '100vh',
+                height: '100vh',
                 padding: '0 20%',
                 backgroundColor: '#faf0f0',
             }}
@@ -86,34 +68,28 @@ function Tarefas() {
                     backgroundColor: 'white',
                     position: 'relative',
                     zIndex: 1,
-                    minHeight: '400px',
+                    minHeight: '400px', // Garante que o box tenha altura mínima
                 }}
             >
                 <Typography variant="h4" gutterBottom align="center">Lista de Tarefas</Typography>
                 <form onSubmit={addTarefa}>
                     <TextField
                         id="outlined-basic"
-                        label={editId ? "Editar Tarefa" : "Inserir Tarefa"}
+                        label="Inserir Tarefa"
                         variant="outlined"
                         fullWidth
                         margin="normal"
                         size="small"
-                        value={editId ? editInput : input}
-                        onChange={e => editId ? setEditInput(e.target.value) : setInput(e.target.value)}
+                        value={input}
+                        onChange={e => setInput(e.target.value)}
                     />
                     <Button type="submit" variant="contained" color="primary" fullWidth>
-                        {editId ? "Salvar Edição" : "Adicionar Tarefa"}
+                        Adicionar Tarefa
                     </Button>
                 </form>
                 <Box sx={{ marginTop: 2 }}>
                     <ul>
-                        {Tarefas.map(item => (
-                            <Tarefa 
-                                key={item.id} 
-                                arr={item} 
-                                onEdit={() => handleEdit(item.id, item.item.tarefa)} 
-                            />
-                        ))}
+                        {Tarefas.map(item => <Tarefa key={item.id} arr={item} />)}
                     </ul>
                 </Box>
                 <Box sx={{ marginTop: 2 }}>

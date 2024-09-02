@@ -49,7 +49,7 @@ function Login() {
                     backgroundColor: 'white',
                     position: 'relative',
                     zIndex: 1,
-                    minHeight: '400px',
+                    minHeight: '400px', // Garante que o box tenha altura mínima
                 }}
             >
                 <Typography variant="h4" gutterBottom align="center">Lista de Tarefas</Typography>
