@@ -13,7 +13,7 @@ function Cadastro() {
         e.preventDefault();
         const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
+            .then(() => {
                 navigate('/tarefas');
             })
             .catch((error) => {
@@ -33,7 +33,6 @@ function Cadastro() {
                 alignItems: 'center',
                 height: '100vh',
                 padding: '0 20%',
-                position: 'relative',
                 backgroundColor: '#faf0f0',
             }}
         >
@@ -52,6 +51,9 @@ function Cadastro() {
                     backgroundColor: 'white',
                     position: 'relative',
                     zIndex: 1,
+                    minHeight: '400px', // Garante que o box tenha altura mínima
+                    display: 'flex',
+                    flexDirection: 'column',
                 }}
             >
                 <Typography variant="h4" gutterBottom align="center">Cadastro</Typography>
@@ -85,6 +87,18 @@ function Cadastro() {
                 >
                     Voltar
                 </Button>
+                <Box
+                    sx={{
+                        marginTop: 'auto',
+                        padding: '1rem',
+                        textAlign: 'center',
+                        borderTop: '1px solid #ddd',
+                    }}
+                >
+                    <Typography variant="body2" color="textSecondary" sx={{ marginBottom: '0.5rem' }}>
+                        Criado por Anne e Guilherme - 2024
+                    </Typography>
+                </Box>
             </Box>
         </Box>
     );

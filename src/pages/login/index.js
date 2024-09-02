@@ -13,7 +13,7 @@ function Login() {
         e.preventDefault();
         const auth = getAuth();
         signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
+            .then(() => {
                 navigate('/tarefas');
             })
             .catch((error) => {
@@ -33,18 +33,15 @@ function Login() {
                 alignItems: 'center',
                 height: '100vh',
                 padding: '0 20%',
-                position: 'relative',
                 backgroundColor: '#faf0f0',
             }}
         >
             <Box
-                component="form"
-                onSubmit={handleLogin}
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     width: '100%',
-                    maxWidth: '400px',
+                    maxWidth: '600px',
                     minWidth: '250px',
                     padding: '2rem',
                     boxShadow: 3,
@@ -52,39 +49,54 @@ function Login() {
                     backgroundColor: 'white',
                     position: 'relative',
                     zIndex: 1,
+                    minHeight: '400px', // Garante que o box tenha altura mínima
                 }}
             >
                 <Typography variant="h4" gutterBottom align="center">Lista de Tarefas</Typography>
-                <TextField
-                    label="Email"
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <TextField
-                    label="Password"
-                    type="password"
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                {error && <Typography color="error" align="center">{error}</Typography>}
-                <Button type="submit" variant="contained" color="primary" fullWidth>
-                    Login
-                </Button>
-                <Button
-                    variant="outlined"
-                    color="secondary"
-                    fullWidth
-                    style={{ marginTop: '10px' }}
-                    onClick={handleSignupRedirect}
+                <form onSubmit={handleLogin}>
+                    <TextField
+                        label="Email"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <TextField
+                        label="Password"
+                        type="password"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    {error && <Typography color="error">{error}</Typography>}
+                    <Button type="submit" variant="contained" color="primary" fullWidth>
+                        Login
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        fullWidth
+                        style={{ marginTop: '10px' }}
+                        onClick={handleSignupRedirect}
+                    >
+                        Cadastro
+                    </Button>
+                </form>
+                <Box
+                    sx={{
+                        marginTop: 'auto',
+                        padding: '1rem',
+                        textAlign: 'center',
+                        borderTop: '1px solid #ddd',
+                    }}
                 >
-                    Cadastro
-                </Button>
+                    <Typography variant="body2" color="textSecondary">
+                        Criado por Anne e Guilherme - 2024
+                    </Typography>
+                </Box>
             </Box>
         </Box>
     );
