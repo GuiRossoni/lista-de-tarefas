@@ -52,8 +52,6 @@ function Cadastro() {
                     position: 'relative',
                     zIndex: 1,
                     minHeight: '400px', // Garante que o box tenha altura mínima
-                    display: 'flex',
-                    flexDirection: 'column',
                 }}
             >
                 <Typography variant="h4" gutterBottom align="center">Cadastro</Typography>

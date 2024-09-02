@@ -47,11 +47,11 @@ function Tarefas() {
         <Box
             sx={{
                 display: 'flex',
+                flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
                 height: '100vh',
                 padding: '0 20%',
-                position: 'relative',
                 backgroundColor: '#faf0f0',
             }}
         >
@@ -68,6 +68,7 @@ function Tarefas() {
                     backgroundColor: 'white',
                     position: 'relative',
                     zIndex: 1,
+                    minHeight: '400px', // Garante que o box tenha altura mínima
                 }}
             >
                 <Typography variant="h4" gutterBottom align="center">Lista de Tarefas</Typography>
@@ -95,6 +96,18 @@ function Tarefas() {
                     <Button variant="outlined" color="secondary" fullWidth onClick={handleLogout}>
                         Sair
                     </Button>
+                </Box>
+                <Box
+                    sx={{
+                        marginTop: 'auto',
+                        padding: '1rem',
+                        textAlign: 'center',
+                        borderTop: '1px solid #ddd',
+                    }}
+                >
+                    <Typography variant="body2" color="textSecondary" sx={{ marginBottom: '0.5rem' }}>
+                        Criado por Anne e Guilherme - 2024
+                    </Typography>
                 </Box>
             </Box>
         </Box>
