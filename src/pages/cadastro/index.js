@@ -94,7 +94,7 @@ function Cadastro() {
                     }}
                 >
                     <Typography variant="body2" color="textSecondary" sx={{ marginBottom: '0.5rem' }}>
-                        Criado por Anne e Guilherme - 2024
+                        Criado por Anne, Chiara e Guilherme - 2024
                     </Typography>
                 </Box>
             </Box>

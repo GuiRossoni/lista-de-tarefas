@@ -93,7 +93,7 @@ function Tarefas() {
                 <form onSubmit={addTarefa}>
                     <TextField
                         id="outlined-basic"
-                        label={editId ? "Editar Tarefa" : "Inserir Tarefa"}
+                        label={editId ? "Editar Tarefa" : "INSERT da Tarefa"}
                         variant="outlined"
                         fullWidth
                         margin="normal"
@@ -130,7 +130,7 @@ function Tarefas() {
                     }}
                 >
                     <Typography variant="body2" color="textSecondary" sx={{ marginBottom: '0.5rem' }}>
-                        Criado por Anne e Guilherme - 2024
+                        Criado por Anne, Chiara e Guilherme - 2024
                     </Typography>
                 </Box>
             </Box>
