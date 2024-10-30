@@ -1,67 +1,47 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Box } from '@mui/material';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 
-function Login() {
+function Login({ setIsAuthenticated }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        const auth = getAuth();
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const token = userCredential.user.stsTokenManager.accessToken;
-                Cookies.set('authToken', token, { expires: 1 }); // Expira em 1 dia
-                sessionStorage.setItem('isLoggedIn', 'true');
-                navigate('/tarefas'); // Redireciona diretamente após o login bem-sucedido
-            })
-            .catch((error) => {
-                setError(error.message);
+    
+        try {
+            const response = await fetch('http://localhost:5000/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+                credentials: 'include',
             });
-    };
-
-    const handleSignupRedirect = () => {
-        navigate('/cadastro');
+    
+            const responseData = await response.json();
+            if (response.ok) {
+                setIsAuthenticated(true);
+                console.log("Usuário autenticado com sucesso"); // Log para verificação
+                setTimeout(() => navigate('/confirmacao'), 100); // Atraso para garantir atualização do estado
+            } else {
+                setError(responseData.error || 'Erro ao tentar fazer login');
+            }
+        } catch (error) {
+            setError('Erro ao tentar fazer login');
+        }
     };
 
     return (
-        <Box sx={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            height: '100vh', 
-            padding: '0 20%', 
-            backgroundColor: '#faf0f0' }}>
-            <Box sx={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
-                width: '100%', 
-                maxWidth: '600px', 
-                minWidth: '250px', 
-                padding: '2rem', 
-                boxShadow: 3, 
-                borderRadius: 2, 
-                backgroundColor: 'white', 
-                position: 'relative', 
-                zIndex: 1, 
-                minHeight: '400px' }}>
-                <Typography variant="h4" gutterBottom align="center">Lista de Tarefas</Typography>
-                <form onSubmit={handleLogin}>
-                    <TextField label="Email" variant="outlined" fullWidth margin="normal" value={email} onChange={(e) => setEmail(e.target.value)} />
-                    <TextField label="Password" type="password" variant="outlined" fullWidth margin="normal" value={password} onChange={(e) => setPassword(e.target.value)} />
-                    {error && <Typography color="error">{error}</Typography>}
-                    <Button type="submit" variant="contained" color="primary" fullWidth>Login</Button>
-                    <Button variant="outlined" color="secondary" fullWidth style={{ marginTop: '10px' }} onClick={handleSignupRedirect}>Cadastro</Button>
-                </form>
-                <Box sx={{ marginTop: 'auto', padding: '1rem', textAlign: 'center', borderTop: '1px solid #ddd' }}>
-                    <Typography variant="body2" color="textSecondary">Criado por Anne e Guilherme - 2024</Typography>
-                </Box>
-            </Box>
+        <Box>
+            <Typography variant="h4">Login</Typography>
+            <form onSubmit={handleLogin}>
+                <TextField label="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <TextField label="Senha" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                {error && <Typography color="error">{error}</Typography>}
+                <Button type="submit">Login</Button>
+            </form>
+            <Button onClick={() => navigate('/cadastro')}>Cadastro</Button>
         </Box>
     );
 }
