@@ -1,36 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-
+import Cookies from 'js-cookie';
 import Tarefas from './pages/tarefas';
 import Login from './pages/login';
 import Cadastro from './pages/cadastro';
 import Erro from './pages/erro';
 
 function RoutesApp() {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(
+        sessionStorage.getItem('isLoggedIn') === 'true' && !!Cookies.get('authToken')
+    );
 
     useEffect(() => {
-        const auth = getAuth();
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setUser(user);
-            setLoading(false);
-        });
+        const handleAuthChange = () => {
+            const authToken = Cookies.get('authToken');
+            setIsAuthenticated(!!authToken && sessionStorage.getItem('isLoggedIn') === 'true');
+        };
 
-        return () => unsubscribe();
+        window.addEventListener('storage', handleAuthChange);
+        handleAuthChange();
+
+        return () => {
+            window.removeEventListener('storage', handleAuthChange);
+        };
     }, []);
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Login onLoginSuccess={() => setUser(true)} />} />
+                <Route path="/" element={<Login />} />
                 <Route path="/cadastro" element={<Cadastro />} />
-                <Route path="/tarefas" element={user ? <Tarefas /> : <Navigate to="/" />} />
+                <Route path="/tarefas" element={isAuthenticated ? <Tarefas /> : <Navigate to="/" />} />
                 <Route path="*" element={<Erro />} />
             </Routes>
         </Router>

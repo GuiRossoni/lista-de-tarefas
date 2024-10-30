@@ -4,12 +4,12 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth'; 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCXY1EACn5FdmZwUrPOdTP4u-dSG7lfRJw",
-    authDomain: "lista-de-tarefas-a7d89.firebaseapp.com",
-    projectId: "lista-de-tarefas-a7d89",
-    storageBucket: "lista-de-tarefas-a7d89.appspot.com",
-    messagingSenderId: "932668065129",
-    appId: "1:932668065129:web:67c253dbe573e9521129f8",
+  apiKey: "AIzaSyAXljCLWdUx3II2ObCBwaA_gmIU4RVPm0E",
+  authDomain: "lista-de-tarefas-6a712.firebaseapp.com",
+  projectId: "lista-de-tarefas-6a712",
+  storageBucket: "lista-de-tarefas-6a712.firebasestorage.app",
+  messagingSenderId: "79595629627",
+  appId: "1:79595629627:web:c677c77f3d22a37736c01e"
 };
 
 const firebaseApp = initializeApp(firebaseConfig);

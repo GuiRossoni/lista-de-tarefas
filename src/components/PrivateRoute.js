@@ -1,16 +1,14 @@
-// PrivateRoute.js
 import React from 'react';
 import { Route, Navigate } from 'react-router-dom';
-import { getAuth } from 'firebase/auth';
+import Cookies from 'js-cookie';
 
 function PrivateRoute({ element, ...rest }) {
-    const auth = getAuth();
-    const user = auth.currentUser;
+    const authToken = Cookies.get('authToken');
 
     return (
         <Route
             {...rest}
-            element={user ? element : <Navigate to="/" />}
+            element={authToken ? element : <Navigate to="/" />}
         />
     );
 }

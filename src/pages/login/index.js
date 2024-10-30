@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -13,8 +14,11 @@ function Login() {
         e.preventDefault();
         const auth = getAuth();
         signInWithEmailAndPassword(auth, email, password)
-            .then(() => {
-                navigate('/tarefas');
+            .then((userCredential) => {
+                const token = userCredential.user.stsTokenManager.accessToken;
+                Cookies.set('authToken', token, { expires: 1 }); // Expira em 1 dia
+                sessionStorage.setItem('isLoggedIn', 'true');
+                navigate('/tarefas'); // Redireciona diretamente após o login bem-sucedido
             })
             .catch((error) => {
                 setError(error.message);
@@ -26,76 +30,36 @@ function Login() {
     };
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh',
-                padding: '0 20%',
-                backgroundColor: '#faf0f0',
-            }}
-        >
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    width: '100%',
-                    maxWidth: '600px',
-                    minWidth: '250px',
-                    padding: '2rem',
-                    boxShadow: 3,
-                    borderRadius: 2,
-                    backgroundColor: 'white',
-                    position: 'relative',
-                    zIndex: 1,
-                    minHeight: '400px',
-                }}
-            >
+        <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            height: '100vh', 
+            padding: '0 20%', 
+            backgroundColor: '#faf0f0' }}>
+            <Box sx={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                width: '100%', 
+                maxWidth: '600px', 
+                minWidth: '250px', 
+                padding: '2rem', 
+                boxShadow: 3, 
+                borderRadius: 2, 
+                backgroundColor: 'white', 
+                position: 'relative', 
+                zIndex: 1, 
+                minHeight: '400px' }}>
                 <Typography variant="h4" gutterBottom align="center">Lista de Tarefas</Typography>
                 <form onSubmit={handleLogin}>
-                    <TextField
-                        label="Email"
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <TextField
-                        label="Password"
-                        type="password"
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
+                    <TextField label="Email" variant="outlined" fullWidth margin="normal" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <TextField label="Password" type="password" variant="outlined" fullWidth margin="normal" value={password} onChange={(e) => setPassword(e.target.value)} />
                     {error && <Typography color="error">{error}</Typography>}
-                    <Button type="submit" variant="contained" color="primary" fullWidth>
-                        Login
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                        fullWidth
-                        style={{ marginTop: '10px' }}
-                        onClick={handleSignupRedirect}
-                    >
-                        Cadastro
-                    </Button>
+                    <Button type="submit" variant="contained" color="primary" fullWidth>Login</Button>
+                    <Button variant="outlined" color="secondary" fullWidth style={{ marginTop: '10px' }} onClick={handleSignupRedirect}>Cadastro</Button>
                 </form>
-                <Box
-                    sx={{
-                        marginTop: 'auto',
-                        padding: '1rem',
-                        textAlign: 'center',
-                        borderTop: '1px solid #ddd',
-                    }}
-                >
-                    <Typography variant="body2" color="textSecondary">
-                        Criado por Anne, Chiara e Guilherme - 2024
-                    </Typography>
+                <Box sx={{ marginTop: 'auto', padding: '1rem', textAlign: 'center', borderTop: '1px solid #ddd' }}>
+                    <Typography variant="body2" color="textSecondary">Criado por Anne e Guilherme - 2024</Typography>
                 </Box>
             </Box>
         </Box>
