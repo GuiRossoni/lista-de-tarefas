@@ -51,7 +51,7 @@ function Cadastro() {
                     backgroundColor: 'white',
                     position: 'relative',
                     zIndex: 1,
-                    minHeight: '400px', 
+                    minHeight: '400px', // Garante que o box tenha altura mínima
                 }}
             >
                 <Typography variant="h4" gutterBottom align="center">Cadastro</Typography>
@@ -94,7 +94,7 @@ function Cadastro() {
                     }}
                 >
                     <Typography variant="body2" color="textSecondary" sx={{ marginBottom: '0.5rem' }}>
-                        Criado por Anne, Chiara e Guilherme - 2024
+                        Criado por Anne e Guilherme - 2024
                     </Typography>
                 </Box>
             </Box>
