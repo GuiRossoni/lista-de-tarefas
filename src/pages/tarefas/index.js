@@ -1,63 +1,71 @@
+// tarefas/index.js
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Box, Typography } from '@mui/material';
-import Tarefa from '../../components/tarefas';
-import { db } from '../../firebase';
-import { collection, query, orderBy, onSnapshot, addDoc, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
-import { getAuth, signOut } from 'firebase/auth';
+import { TextField, Button, Box, Typography, Checkbox, IconButton } from '@mui/material';
+import { Delete, Edit } from '@mui/icons-material';
+import TaskFactory from '../../taskfactory'; // Factory para criação e atualização de tarefas
+import firebaseService from '../../firebase'; // Singleton para instância única do Firebase
+import { onSnapshot, query, collection, orderBy } from 'firebase/firestore';
 import '../../components/style.css';
 
-const q = query(collection(db, 'tarefas'), orderBy('timestamp', 'desc'));
+const db = firebaseService.db;
+const auth = firebaseService.auth;
+
+// Observer - Função para monitorar mudanças em tempo real na coleção 'tarefas'
+function observeTasks(setTarefas) {
+    const tarefasQuery = query(collection(db, 'tarefas'), orderBy('timestamp', 'desc'));
+    return onSnapshot(tarefasQuery, (snapshot) => {
+        setTarefas(snapshot.docs.map((doc) => ({
+            id: doc.id,
+            item: doc.data()
+        })));
+    });
+}
 
 function Tarefas() {
-    const [Tarefas, setTarefas] = useState([]);
+    const [tarefas, setTarefas] = useState([]);
     const [input, setInput] = useState('');
     const [editId, setEditId] = useState(null);
     const [editInput, setEditInput] = useState('');
+    const user = auth.currentUser;
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            setTarefas(snapshot.docs.map(doc => ({
-                id: doc.id,
-                item: doc.data()
-            })));
-        });
+        const unsubscribe = observeTasks(setTarefas);
         return () => unsubscribe();
-    }, [input]);
+    }, []);
 
-    const addTarefa = (e) => {
+    // Adiciona ou atualiza uma tarefa usando o padrão Factory
+    const addTarefa = async (e) => {
         e.preventDefault();
-        const auth = getAuth();
-        const user = auth.currentUser;
         if (editId) {
-            const tarefaDocRef = doc(db, 'tarefas', editId);
-            updateDoc(tarefaDocRef, {
-                tarefa: editInput,
-                timestamp: serverTimestamp(),
-            });
+            await TaskFactory.updateTask(editId, editInput);
             setEditId(null);
             setEditInput('');
         } else {
-            addDoc(collection(db, 'tarefas'), {
-                tarefa: input,
-                timestamp: serverTimestamp(),
-                createdBy: user ? user.email : 'unknown'
-            });
+            await TaskFactory.createTask(input, user);
+            setInput('');
         }
-        setInput('');
     };
 
-    const handleEdit = (id, currentTask) => {
+    const handleEdit = (id, currentText) => {
         setEditId(id);
-        setEditInput(currentTask);
+        setEditInput(currentText);
     };
 
-    const handleLogout = () => {
-        const auth = getAuth();
-        signOut(auth).then(() => {
-            console.log("Logged out successfully");
-        }).catch((error) => {
-            console.error("Error logging out: ", error);
-        });
+    const handleDelete = async (id) => {
+        await TaskFactory.deleteTask(id);
+    };
+
+    const handleToggleCompletion = async (id, isComplete) => {
+        await TaskFactory.updateTaskCompletion(id, !isComplete);
+    };
+
+    const handleLogout = async () => {
+        try {
+            await auth.signOut();
+            window.location.reload();
+        } catch (error) {
+            console.error("Erro ao sair: ", error);
+        }
     };
 
     return (
@@ -67,7 +75,6 @@ function Tarefas() {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                height: 'auto',
                 minHeight: '100vh',
                 padding: '0 20%',
                 backgroundColor: '#faf0f0',
@@ -79,7 +86,6 @@ function Tarefas() {
                     flexDirection: 'column',
                     width: '100%',
                     maxWidth: '600px',
-                    minWidth: '250px',
                     padding: '2rem',
                     boxShadow: 3,
                     borderRadius: 2,
@@ -92,8 +98,7 @@ function Tarefas() {
                 <Typography variant="h4" gutterBottom align="center">Lista de Tarefas</Typography>
                 <form onSubmit={addTarefa}>
                     <TextField
-                        id="outlined-basic"
-                        label={editId ? "Editar Tarefa" : "INSERT da Tarefa"}
+                        label={editId ? "Editar Tarefa" : "Adicionar Tarefa"}
                         variant="outlined"
                         fullWidth
                         margin="normal"
@@ -107,11 +112,13 @@ function Tarefas() {
                 </form>
                 <Box sx={{ marginTop: 2 }}>
                     <ul>
-                        {Tarefas.map(item => (
+                        {tarefas.map(item => (
                             <Tarefa 
                                 key={item.id} 
                                 arr={item} 
-                                onEdit={() => handleEdit(item.id, item.item.tarefa)} 
+                                onEdit={() => handleEdit(item.id, item.item.tarefa)}
+                                onDelete={() => handleDelete(item.id)}
+                                onToggleCompletion={() => handleToggleCompletion(item.id, item.item.completed)}
                             />
                         ))}
                     </ul>
@@ -134,6 +141,39 @@ function Tarefas() {
                     </Typography>
                 </Box>
             </Box>
+        </Box>
+    );
+}
+
+// Componente Tarefa para renderizar cada item da lista de tarefas
+function Tarefa({ arr, onEdit, onDelete, onToggleCompletion }) {
+    return (
+        <Box
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0.5rem',
+                margin: '0.5rem 0',
+                boxShadow: 1,
+                borderRadius: 1,
+                backgroundColor: arr.item.completed ? '#e0ffe0' : '#ffffff',
+            }}
+        >
+            <Checkbox
+                checked={arr.item.completed || false}
+                onChange={onToggleCompletion}
+                color="primary"
+            />
+            <Typography variant="body1" sx={{ textDecoration: arr.item.completed ? 'line-through' : 'none', flex: 1 }}>
+                {arr.item.tarefa}
+            </Typography>
+            <IconButton onClick={onEdit} color="primary">
+                <Edit />
+            </IconButton>
+            <IconButton onClick={onDelete} color="secondary">
+                <Delete />
+            </IconButton>
         </Box>
     );
 }

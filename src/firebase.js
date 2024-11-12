@@ -1,7 +1,6 @@
-// firebase.js
-import { initializeApp } from "firebase/app";
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth'; 
 
 const firebaseConfig = {
     apiKey: "AIzaSyCXY1EACn5FdmZwUrPOdTP4u-dSG7lfRJw",
@@ -12,8 +11,19 @@ const firebaseConfig = {
     appId: "1:932668065129:web:67c253dbe573e9521129f8",
 };
 
-const firebaseApp = initializeApp(firebaseConfig);
-const db = getFirestore(firebaseApp);
-const auth = getAuth(firebaseApp);
+class FirebaseService {
+    constructor() {
+        if (!FirebaseService.instance) {
+            const app = initializeApp(firebaseConfig);
+            this.auth = getAuth(app);
+            this.db = getFirestore(app);
+            FirebaseService.instance = this;
+        }
+        return FirebaseService.instance;
+    }
+}
 
-export { db, auth };
+const instance = new FirebaseService();
+Object.freeze(instance);
+
+export default instance;

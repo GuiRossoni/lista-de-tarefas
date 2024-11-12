@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
+import firebaseService from './firebase';
 
 import Tarefas from './pages/tarefas';
 import Login from './pages/login';
@@ -12,7 +13,7 @@ function RoutesApp() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const auth = getAuth();
+        const auth = firebaseService.auth;
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setUser(user);
             setLoading(false);
