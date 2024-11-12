@@ -3,39 +3,39 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { onAuthStateChanged } from 'firebase/auth';
 import firebaseService from './firebase';
 
-import Tarefas from './pages/tarefas';
-import Login from './pages/login';
-import Cadastro from './pages/cadastro';
-import Erro from './pages/erro';
+import TaskListPage from './pages/TaskListPage';
+import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
+import NotFoundPage from './pages/NotFoundPage';
 
-function RoutesApp() {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+function AppRoutes() {
+    const [currentUser, setCurrentUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const auth = firebaseService.auth;
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setUser(user);
-            setLoading(false);
+            setCurrentUser(user);
+            setIsLoading(false);
         });
 
         return () => unsubscribe();
     }, []);
 
-    if (loading) {
+    if (isLoading) {
         return <div>Loading...</div>;
     }
 
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Login onLoginSuccess={() => setUser(true)} />} />
-                <Route path="/cadastro" element={<Cadastro />} />
-                <Route path="/tarefas" element={user ? <Tarefas /> : <Navigate to="/" />} />
-                <Route path="*" element={<Erro />} />
+                <Route path="/" element={<LoginPage onLoginSuccess={() => setCurrentUser(true)} />} />
+                <Route path="/signup" element={<SignUpPage />} />
+                <Route path="/tasks" element={currentUser ? <TaskListPage /> : <Navigate to="/" />} />
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </Router>
     );
 }
 
-export default RoutesApp;
+export default AppRoutes;

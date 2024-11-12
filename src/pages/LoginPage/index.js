@@ -14,7 +14,7 @@ function Login() {
         const auth = getAuth();
         signInWithEmailAndPassword(auth, email, password)
             .then(() => {
-                navigate('/tarefas');
+                navigate('/tasks');
             })
             .catch((error) => {
                 setError(error.message);
@@ -22,7 +22,7 @@ function Login() {
     };
 
     const handleSignupRedirect = () => {
-        navigate('/cadastro');
+        navigate('/signup');
     };
 
     return (
@@ -94,7 +94,7 @@ function Login() {
                     }}
                 >
                     <Typography variant="body2" color="textSecondary">
-                        Criado por Anne, Chiara e Guilherme - 2024
+                        Criado por Anne, Chiara, Guilherme e Rubens - 2024
                     </Typography>
                 </Box>
             </Box>
