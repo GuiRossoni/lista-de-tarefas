@@ -5,6 +5,7 @@ import TaskService from '../../components/taskFactory';
 import firebaseService from '../../firebase';
 import { onSnapshot, query, collection, orderBy } from 'firebase/firestore';
 import '../../components/style.css';
+import { format } from 'date-fns';
 
 const db = firebaseService.db;
 const auth = firebaseService.auth;
@@ -143,6 +144,10 @@ function TaskListPage() {
 }
 
 function Task({ taskData, onEdit, onDelete, onToggleCompletion }) {
+    const formattedDate = taskData.data.timestamp && taskData.data.timestamp.seconds
+        ? format(new Date(taskData.data.timestamp.seconds * 1000), 'dd/MM/yyyy HH:mm')
+        : 'Data desconhecida';
+
     return (
         <Box
             sx={{
@@ -161,9 +166,14 @@ function Task({ taskData, onEdit, onDelete, onToggleCompletion }) {
                 onChange={onToggleCompletion}
                 color="primary"
             />
-            <Typography variant="body1" sx={{ textDecoration: taskData.data.completed ? 'line-through' : 'none', flex: 1 }}>
-                {taskData.data.description}
-            </Typography>
+            <Box sx={{ flex: 1 }}>
+                <Typography variant="body1" sx={{ textDecoration: taskData.data.completed ? 'line-through' : 'none' }}>
+                    {taskData.data.description}
+                </Typography>
+                <Typography variant="caption" color="textSecondary">
+                    Criado por: {taskData.data.createdBy} em {formattedDate}
+                </Typography>
+            </Box>
             <IconButton onClick={onEdit} color="primary">
                 <Edit />
             </IconButton>

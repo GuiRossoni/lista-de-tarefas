@@ -9,6 +9,7 @@ class TaskService {
             const task = {
                 description: taskText,
                 userId: user.uid,
+                createdBy: user.displayName || user.email, // Nome ou email do criador
                 timestamp: serverTimestamp(),
                 completed: false,
             };
