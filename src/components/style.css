@@ -29,6 +29,29 @@ body, html {
     min-height: 400px;
 }
 
+.page-container-error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 0 20%;
+    background-color: #faf0f0;
+}
+
+.form-box-error {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    min-width: 250px;
+    padding: 2rem;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: white;
+    position: relative;
+    z-index: 1;
+}
+
 .header-text {
     margin-top: auto;
     padding: 1rem;

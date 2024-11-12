@@ -21,38 +21,12 @@ function Erro() {
     }, [navigate]);
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh',
-                padding: '0 20%',
-                backgroundColor: '#faf0f0',
-            }}
-        >
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    width: '100%',
-                    maxWidth: '600px',
-                    minWidth: '250px',
-                    padding: '2rem',
-                    boxShadow: 3,
-                    borderRadius: 2,
-                    backgroundColor: 'white',
-                    textAlign: 'center',
-                }}
-            >
-                <Typography variant="h4" gutterBottom>
-                    Ops! Parece que essa página não existe
-                </Typography>
-                <Typography variant="body1">
-                    Você será redirecionado para a página de login em {seconds} segundos.
-                </Typography>
-            </Box>
+        <Box className="page-container-error">
+        <Box className="form-box-error" style={{ textAlign: 'center' }}>
+            <Typography variant="h4" gutterBottom>Ops! Parece que essa página não existe</Typography>
+            <Typography variant="body1">Você será redirecionado para a página de login em {seconds} segundos.</Typography>
         </Box>
+    </Box>
     );
 }
 
