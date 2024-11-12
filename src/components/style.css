@@ -1,49 +1,85 @@
-.App {
-    display: grid;
-    place-items: center;
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
-.lista {
+.page-container {
     display: flex;
-    flex-direction: column; 
-    align-items: flex-start;
-    border: 1px solid lightgray;
-    margin-bottom: 10px !important;
-    padding: 10px;
-    background-color: white;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 0 20%;
+    background-color: #faf0f0;
+}
+
+.form-box {
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    overflow-wrap: break-word; 
+    max-width: 600px;
+    min-width: 250px;
+    padding: 2rem;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: white;
+    position: relative;
+    z-index: 1;
+    min-height: 400px;
 }
 
-.lista .MuiListItemAvatar-root {
-    min-width: 56px;
+.header-text {
+    margin-top: auto;
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid #ddd;
 }
 
-.lista .MuiListItemText-primary {
-    font-weight: bold;
+.header-text p {
+    margin-bottom: 0.5rem;
+    color: #666;
 }
 
-.lista .MuiListItemText-secondary {
-    font-size: 0.875rem;
-    color: gray;
+.task-list {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
-
-.lista .MuiListItemText-primary, 
-.lista .MuiListItemText-secondary {
-    word-wrap: break-word; 
-    overflow-wrap: break-word;
+.task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: #ffffff;
 }
 
-
-@media (max-width: 600px) {
-    .lista {
-        flex-direction: column; 
-        align-items: flex-start;
-    }
+.task-item.completed {
+    background-color: #e0ffe0;
 }
 
+.task-item p {
+    margin: 0;
+}
+
+.task-item .task-text {
+    flex: 1;
+    text-decoration: none;
+}
+
+.task-item .task-text.completed {
+    text-decoration: line-through;
+}
+
+.logout-btn {
+    margin-top: 2rem;
+}
+
+.redirect-text {
+    color: #666;
+    margin-top: 1rem;
+    font-size: 14px;
+}

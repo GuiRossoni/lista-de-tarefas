@@ -3,7 +3,7 @@ import { TextField, Button, Typography, Box } from '@mui/material';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
-function Cadastro() {
+function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -26,34 +26,8 @@ function Cadastro() {
     };
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh',
-                padding: '0 20%',
-                backgroundColor: '#faf0f0',
-            }}
-        >
-            <Box
-                component="form"
-                onSubmit={handleSignup}
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    width: '100%',
-                    maxWidth: '400px',
-                    minWidth: '250px',
-                    padding: '2rem',
-                    boxShadow: 3,
-                    borderRadius: 2,
-                    backgroundColor: 'white',
-                    position: 'relative',
-                    zIndex: 1,
-                    minHeight: '400px', 
-                }}
-            >
+        <Box className="page-container">
+            <Box component="form" onSubmit={handleSignup} className="form-box">
                 <Typography variant="h4" gutterBottom align="center">Cadastro</Typography>
                 <TextField
                     label="Email"
@@ -73,33 +47,20 @@ function Cadastro() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 {error && <Typography color="error" align="center">{error}</Typography>}
-                <Button type="submit" variant="contained" color="primary" fullWidth>
-                    Cadastrar
-                </Button>
-                <Button
-                    variant="outlined"
-                    color="secondary"
-                    fullWidth
-                    style={{ marginTop: '10px' }}
-                    onClick={handleBack}
-                >
-                    Voltar
-                </Button>
-                <Box
-                    sx={{
-                        marginTop: 'auto',
-                        padding: '1rem',
-                        textAlign: 'center',
-                        borderTop: '1px solid #ddd',
-                    }}
-                >
-                    <Typography variant="body2" color="textSecondary" sx={{ marginBottom: '0.5rem' }}>
+                    <Button type="submit" variant="contained" style={{ marginTop: '10px' }} color="primary" fullWidth>
+                        Cadastrar
+                    </Button>
+                    <Button variant="outlined" color="secondary" fullWidth style={{ marginTop: '10px' }} onClick={handleBack}>
+                        Voltar
+                    </Button>
+                <Box className="header-text">
+                    <Typography variant="body2" className="redirect-text">
                         Criado por Anne, Chiara, Guilherme e Rubens - 2024
-                    </Typography>
-                </Box>
+                </Typography>
             </Box>
         </Box>
+    </Box>
     );
 }
 
-export default Cadastro;
+export default SignUp;

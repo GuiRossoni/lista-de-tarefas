@@ -26,32 +26,8 @@ function Login() {
     };
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh',
-                padding: '0 20%',
-                backgroundColor: '#faf0f0',
-            }}
-        >
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    width: '100%',
-                    maxWidth: '600px',
-                    minWidth: '250px',
-                    padding: '2rem',
-                    boxShadow: 3,
-                    borderRadius: 2,
-                    backgroundColor: 'white',
-                    position: 'relative',
-                    zIndex: 1,
-                    minHeight: '400px',
-                }}
-            >
+        <Box className="page-container">
+            <Box className="form-box">
                 <Typography variant="h4" gutterBottom align="center">Lista de Tarefas</Typography>
                 <form onSubmit={handleLogin}>
                     <TextField
@@ -72,28 +48,15 @@ function Login() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     {error && <Typography color="error">{error}</Typography>}
-                    <Button type="submit" variant="contained" color="primary" fullWidth>
+                    <Button type="submit" variant="contained" style={{ marginTop: '10px' }} color="primary" fullWidth>
                         Login
                     </Button>
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                        fullWidth
-                        style={{ marginTop: '10px' }}
-                        onClick={handleSignupRedirect}
-                    >
+                    <Button variant="outlined" color="secondary" fullWidth style={{ marginTop: '10px' }} onClick={handleSignupRedirect}>
                         Cadastro
                     </Button>
                 </form>
-                <Box
-                    sx={{
-                        marginTop: 'auto',
-                        padding: '1rem',
-                        textAlign: 'center',
-                        borderTop: '1px solid #ddd',
-                    }}
-                >
-                    <Typography variant="body2" color="textSecondary">
+                <Box className="header-text">
+                    <Typography variant="body2" className="redirect-text">
                         Criado por Anne, Chiara, Guilherme e Rubens - 2024
                     </Typography>
                 </Box>

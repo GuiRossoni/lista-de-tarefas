@@ -67,32 +67,8 @@ function TaskListPage() {
     };
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                minHeight: '100vh',
-                padding: '0 20%',
-                backgroundColor: '#faf0f0',
-            }}
-        >
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    width: '100%',
-                    maxWidth: '600px',
-                    padding: '2rem',
-                    boxShadow: 3,
-                    borderRadius: 2,
-                    backgroundColor: 'white',
-                    position: 'relative',
-                    zIndex: 1,
-                    minHeight: '400px',
-                }}
-            >
+        <Box className="page-container">
+            <Box className="form-box">
                 <Typography variant="h4" gutterBottom align="center">Lista de Tarefas</Typography>
                 <form onSubmit={handleAddOrEditTask}>
                     <TextField
@@ -108,7 +84,7 @@ function TaskListPage() {
                         {editTaskId ? "Salvar" : "Adicionar"}
                     </Button>
                 </form>
-                <Box sx={{ marginTop: 2 }}>
+                <Box className="task-list">
                     <ul>
                         {tasks.map(task => (
                             <Task 
@@ -121,20 +97,11 @@ function TaskListPage() {
                         ))}
                     </ul>
                 </Box>
-                <Box sx={{ marginTop: 2 }}>
-                    <Button variant="outlined" color="secondary" fullWidth onClick={handleLogout}>
-                        Logout
-                    </Button>
-                </Box>
-                <Box
-                    sx={{
-                        marginTop: 'auto',
-                        padding: '1rem',
-                        textAlign: 'center',
-                        borderTop: '1px solid #ddd',
-                    }}
-                >
-                    <Typography variant="body2" color="textSecondary" sx={{ marginBottom: '0.5rem' }}>
+                <Button variant="outlined" color="secondary" fullWidth className="logout-btn" onClick={handleLogout}>
+                    Logout
+                </Button>
+                <Box className="header-text">
+                    <Typography variant="body2" className="redirect-text">
                         Criado por Anne, Chiara, Guilherme e Rubens - 2024
                     </Typography>
                 </Box>
@@ -149,25 +116,14 @@ function Task({ taskData, onEdit, onDelete, onToggleCompletion }) {
         : 'Data desconhecida';
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '0.5rem',
-                margin: '0.5rem 0',
-                boxShadow: 1,
-                borderRadius: 1,
-                backgroundColor: taskData.data.completed ? '#e0ffe0' : '#ffffff',
-            }}
-        >
+        <Box className={`task-item ${taskData.data.completed ? 'completed' : ''}`}>
             <Checkbox
                 checked={taskData.data.completed || false}
                 onChange={onToggleCompletion}
                 color="primary"
             />
-            <Box sx={{ flex: 1 }}>
-                <Typography variant="body1" sx={{ textDecoration: taskData.data.completed ? 'line-through' : 'none' }}>
+            <Box className="task-text">
+                <Typography variant="body1" className={`task-text ${taskData.data.completed ? 'completed' : ''}`}>
                     {taskData.data.description}
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
