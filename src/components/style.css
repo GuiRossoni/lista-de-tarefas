@@ -26,8 +26,9 @@ body, html {
     background-color: white;
     position: relative;
     z-index: 1;
-    min-height: 400px;
+    padding-bottom: 4rem; /* Ajuste para dar mais espaço na parte inferior */
 }
+
 
 .page-container-error {
     display: flex;
@@ -105,4 +106,11 @@ body, html {
     color: #666;
     margin-top: 1rem;
     font-size: 14px;
+}
+
+.footer-text {
+    text-align: center;
+    color: #666;
+    margin-top: 2rem; /* Aumenta o espaçamento entre o botão e o texto */
+    padding-top: 1rem; /* Opcional, para aumentar o espaçamento superior */
 }
