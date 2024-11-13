@@ -1,24 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button } from '@mui/material';
+import ServiceFacade from '../../services/ServiceFacade';
+import TaskForm from '../../components/TaskForm';
+import Task from '../../components/Task';
 import firebaseService from '../../firebase';
 import { onSnapshot, query, collection, orderBy } from 'firebase/firestore';
 import '../../components/style.css';
-import TaskService from '../../components/TaskService';
-import TaskForm from '../../components/TaskForm';
-import Task from '../../components/Task';
 
 const db = firebaseService.db;
 const auth = firebaseService.auth;
-
-function observeTasks(setTasks) {
-    const tasksQuery = query(collection(db, 'tasks'), orderBy('timestamp', 'desc'));
-    return onSnapshot(tasksQuery, (snapshot) => {
-        setTasks(snapshot.docs.map((doc) => ({
-            id: doc.id,
-            data: doc.data()
-        })));
-    });
-}
 
 function TaskListPage() {
     const [tasks, setTasks] = useState([]);
@@ -26,16 +16,25 @@ function TaskListPage() {
     const currentUser = auth.currentUser;
 
     useEffect(() => {
-        const unsubscribe = observeTasks(setTasks);
+        const unsubscribe = onSnapshot(
+            query(collection(db, 'tasks'), orderBy('timestamp', 'desc')),
+            (snapshot) => {
+                const tasksData = snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    data: doc.data(),
+                }));
+                setTasks(tasksData);
+            }
+        );
         return () => unsubscribe();
     }, []);
 
     const handleAddTask = async (taskText) => {
-        await TaskService.addTask(taskText, currentUser);
+        await ServiceFacade.addTask(taskText, currentUser);
     };
 
     const handleEditTask = async (taskText) => {
-        await TaskService.editTask(editTask.id, taskText);
+        await ServiceFacade.editTask(editTask.id, taskText);
         setEditTask(null);
     };
 
@@ -48,12 +47,12 @@ function TaskListPage() {
     };
 
     const handleEdit = (task) => setEditTask(task);
-    const handleDelete = async (id) => await TaskService.removeTask(id);
-    const handleToggleCompletion = async (id, isComplete) => await TaskService.updateTaskStatus(id, !isComplete);
+    const handleDelete = async (id) => await ServiceFacade.removeTask(id);
+    const handleToggleCompletion = async (id, isComplete) => await ServiceFacade.updateTaskStatus(id, !isComplete);
 
     const handleLogout = async () => {
         try {
-            await auth.signOut();
+            await ServiceFacade.logout();
             window.location.reload();
         } catch (error) {
             console.error("Logout error: ", error);

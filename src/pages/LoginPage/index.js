@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthForm from '../../components/AuthForm';
-import AuthService from '../../services/AuthService';
+import ServiceFacade from '../../services/ServiceFacade';
 
 function LoginPage() {
     const [email, setEmail] = useState('');
@@ -12,7 +12,7 @@ function LoginPage() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            await AuthService.login(email, password);
+            await ServiceFacade.login(email, password);
             navigate('/tasks');
         } catch (err) {
             setError('Erro ao fazer login: ' + err.message);

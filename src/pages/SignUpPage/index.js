@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthForm from '../../components/AuthForm';
-import AuthService from '../../services/AuthService';
+import ServiceFacade from '../../services/ServiceFacade';
 
 function SignupPage() {
     const [email, setEmail] = useState('');
@@ -12,7 +12,7 @@ function SignupPage() {
     const handleSignup = async (e) => {
         e.preventDefault();
         try {
-            await AuthService.signup(email, password);
+            await ServiceFacade.signup(email, password);
             navigate('/tasks');
         } catch (err) {
             setError('Erro ao criar conta: ' + err.message);
