@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography, Checkbox, IconButton } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-import { formatDate } from '../utils/dateUtils';
+import { formatDate } from './dateUtils';
 
 function Task({ taskData, onEdit, onDelete, onToggleCompletion }) {
     const formattedDate = formatDate(taskData.data.timestamp);
