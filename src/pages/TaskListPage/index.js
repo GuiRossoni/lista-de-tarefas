@@ -3,7 +3,7 @@ import { Box, Typography, Button } from '@mui/material';
 import firebaseService from '../../firebase';
 import { onSnapshot, query, collection, orderBy } from 'firebase/firestore';
 import '../../components/style.css';
-import TaskService from '../../components/taskFactory';
+import TaskService from '../../components/TaskService';
 import TaskForm from '../../components/TaskForm';
 import Task from '../../components/Task';
 
