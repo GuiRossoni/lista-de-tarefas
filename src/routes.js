@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { onAuthStateChanged } from 'firebase/auth';
-import firebaseService from './firebase';
+import AuthService from './services/AuthService';
 
 import TaskListPage from './pages/TaskListPage';
 import LoginPage from './pages/LoginPage';
@@ -13,8 +12,7 @@ function AppRoutes() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const auth = firebaseService.auth;
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const unsubscribe = AuthService.onAuthStateChanged((user) => {
             setCurrentUser(user);
             setIsLoading(false);
         });

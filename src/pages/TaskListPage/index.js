@@ -3,7 +3,7 @@ import { Box, Typography, Button } from '@mui/material';
 import firebaseService from '../../firebase';
 import { onSnapshot, query, collection, orderBy } from 'firebase/firestore';
 import '../../components/style.css';
-import TaskService from '../../components/TaskFactory';
+import TaskService from '../../components/taskFactory';
 import TaskForm from '../../components/TaskForm';
 import Task from '../../components/Task';
 
@@ -30,12 +30,20 @@ function TaskListPage() {
         return () => unsubscribe();
     }, []);
 
+    const handleAddTask = async (taskText) => {
+        await TaskService.addTask(taskText, currentUser);
+    };
+
+    const handleEditTask = async (taskText) => {
+        await TaskService.editTask(editTask.id, taskText);
+        setEditTask(null);
+    };
+
     const handleAddOrEditTask = async (taskText) => {
         if (editTask) {
-            await TaskService.editTask(editTask.id, taskText);
-            setEditTask(null);
+            await handleEditTask(taskText);
         } else {
-            await TaskService.addTask(taskText, currentUser);
+            await handleAddTask(taskText);
         }
     };
 
@@ -75,7 +83,7 @@ function TaskListPage() {
                     </ul>
                 </Box>
                 <Button variant="outlined" color="secondary" fullWidth onClick={handleLogout}>
-                    Logout
+                    Sair
                 </Button>
                 <Typography variant="body2" align="center" className="footer-text">
                     Criado por Anne, Chiara, Guilherme e Rubens - 2024

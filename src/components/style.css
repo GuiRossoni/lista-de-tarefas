@@ -26,7 +26,7 @@ body, html {
     background-color: white;
     position: relative;
     z-index: 1;
-    padding-bottom: 4rem; /* Ajuste para dar mais espaço na parte inferior */
+    padding-bottom: 4rem;
 }
 
 
@@ -111,6 +111,22 @@ body, html {
 .footer-text {
     text-align: center;
     color: #666;
-    margin-top: 2rem; /* Aumenta o espaçamento entre o botão e o texto */
-    padding-top: 1rem; /* Opcional, para aumentar o espaçamento superior */
+    margin-top: 2rem;
+    padding-top: 1rem;
+}
+
+.submit-button {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.secondary-button {
+    margin-top: 10px;
+    margin-top: 20px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }

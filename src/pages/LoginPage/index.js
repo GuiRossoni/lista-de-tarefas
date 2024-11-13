@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import AuthForm from '../../components/AuthForm';
+import AuthService from '../../services/AuthService';
 
 function LoginPage() {
     const [email, setEmail] = useState('');
@@ -11,9 +11,8 @@ function LoginPage() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const auth = getAuth();
         try {
-            await signInWithEmailAndPassword(auth, email, password);
+            await AuthService.login(email, password);
             navigate('/tasks');
         } catch (err) {
             setError('Erro ao fazer login: ' + err.message);

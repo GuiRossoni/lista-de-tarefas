@@ -1,12 +1,10 @@
 import React from 'react';
 import { Box, Typography, Checkbox, IconButton } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-import { format } from 'date-fns';
+import { formatDate } from '../utils/dateUtils';
 
 function Task({ taskData, onEdit, onDelete, onToggleCompletion }) {
-    const formattedDate = taskData.data.timestamp && taskData.data.timestamp.seconds
-        ? format(new Date(taskData.data.timestamp.seconds * 1000), 'dd/MM/yyyy HH:mm')
-        : 'Data desconhecida';
+    const formattedDate = formatDate(taskData.data.timestamp);
 
     return (
         <Box className={`task-item ${taskData.data.completed ? 'completed' : ''}`}>

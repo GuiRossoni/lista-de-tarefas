@@ -1,19 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { TextField, Button } from '@mui/material';
+import useTaskForm from '../hooks/useTaskForm';
 
 function TaskForm({ onSubmit, editTask, clearEdit }) {
-    const [taskInput, setTaskInput] = useState('');
-
-    useEffect(() => {
-        if (editTask) setTaskInput(editTask.data.description);
-    }, [editTask]);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSubmit(taskInput);
-        setTaskInput('');
-        if (editTask) clearEdit();
-    };
+    const { taskInput, setTaskInput, handleSubmit } = useTaskForm(onSubmit, editTask, clearEdit);
 
     return (
         <form onSubmit={handleSubmit}>

@@ -1,11 +1,9 @@
-// PrivateRoute.js
 import React from 'react';
 import { Route, Navigate } from 'react-router-dom';
-import { getAuth } from 'firebase/auth';
+import { useAuth } from './hooks/useAuth';
 
 function PrivateRoute({ element, ...rest }) {
-    const auth = getAuth();
-    const user = auth.currentUser;
+    const { user } = useAuth();
 
     return (
         <Route

@@ -1,4 +1,3 @@
-// components/AuthForm.js
 import React from 'react';
 import { TextField, Button, Typography, Box } from '@mui/material';
 
@@ -36,15 +35,16 @@ function AuthForm({
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     {error && <Typography color="error">{error}</Typography>}
-                        <Button type="submit" variant="contained" style={{ marginTop: '10px' }} color="primary" fullWidth>
+                    <Box className="button-container">
+                        <Button type="submit" variant="contained" className="submit-button" color="primary" fullWidth>
                             {buttonText}
                         </Button>
-                    {secondaryAction && (
-                        <Button variant="outlined" color="secondary" fullWidth style={{ marginTop: '10px' }} onClick={secondaryAction.onClick}>
-                            {secondaryAction.label}
-                        </Button>
-                        
-                    )}
+                        {secondaryAction && (
+                            <Button variant="outlined" color="secondary" fullWidth className="secondary-button" onClick={secondaryAction.onClick}>
+                                {secondaryAction.label}
+                            </Button>
+                        )}
+                    </Box>
                     <Typography variant="body2" className="footer-text">
                         Criado por Anne, Chiara, Guilherme e Rubens - 2024
                     </Typography>
