@@ -8,15 +8,18 @@ import SignUpPage from './pages/SignUpPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 function AppRoutes() {
+    // Define os estados para o usuário atual e o estado de carregamento
     const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        // Monitora mudanças no estado de autenticação
         const unsubscribe = AuthService.onAuthStateChanged((user) => {
             setCurrentUser(user);
             setIsLoading(false);
         });
 
+        // Limpa a assinatura quando o componente é desmontado
         return () => unsubscribe();
     }, []);
 

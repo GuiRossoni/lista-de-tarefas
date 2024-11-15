@@ -7,14 +7,17 @@ import firebaseService from '../../firebase';
 import { onSnapshot, query, collection, orderBy } from 'firebase/firestore';
 import '../../components/style.css';
 
+// Inicializa o banco de dados e a autenticação do Firebase
 const db = firebaseService.db;
 const auth = firebaseService.auth;
 
 function TaskListPage() {
+    // Define os estados para as tarefas e a tarefa em edição
     const [tasks, setTasks] = useState([]);
     const [editTask, setEditTask] = useState(null);
     const currentUser = auth.currentUser;
 
+    // Usa o efeito para buscar as tarefas do Firestore quando o componente é montado
     useEffect(() => {
         const unsubscribe = onSnapshot(
             query(collection(db, 'tasks'), orderBy('timestamp', 'desc')),
@@ -26,18 +29,22 @@ function TaskListPage() {
                 setTasks(tasksData);
             }
         );
+        // Limpa a assinatura quando o componente é desmontado
         return () => unsubscribe();
     }, []);
 
+    // Função para adicionar uma nova tarefa
     const handleAddTask = async (taskText) => {
         await ServiceFacade.addTask(taskText, currentUser);
     };
 
+    // Função para editar uma tarefa existente
     const handleEditTask = async (taskText) => {
         await ServiceFacade.editTask(editTask.id, taskText);
         setEditTask(null);
     };
 
+    // Função para adicionar ou editar uma tarefa, dependendo do estado
     const handleAddOrEditTask = async (taskText) => {
         if (editTask) {
             await handleEditTask(taskText);
@@ -46,12 +53,19 @@ function TaskListPage() {
         }
     };
 
+    // Define a tarefa que está sendo editada
     const handleEdit = (task) => setEditTask(task);
+
+    // Função para deletar uma tarefa
     const handleDelete = async (id) => await ServiceFacade.removeTask(id);
+
+    // Função para alternar o status de conclusão de uma tarefa
     const handleToggleCompletion = async (id, isComplete) => await ServiceFacade.updateTaskStatus(id, !isComplete);
 
+    // Função para fazer logout do usuário
     const handleLogout = async () => {
         try {
+            console.log("Logout button clicked");
             await ServiceFacade.logout();
             window.location.reload();
         } catch (error) {

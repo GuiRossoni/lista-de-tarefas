@@ -3,6 +3,7 @@ import { Route, Navigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 
 function PrivateRoute({ element, ...rest }) {
+    // Obtém o usuário autenticado do hook useAuth
     const { user } = useAuth();
 
     return (

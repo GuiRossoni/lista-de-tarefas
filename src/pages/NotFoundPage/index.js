@@ -3,6 +3,7 @@ import { Box, Typography } from '@mui/material';
 import useRedirectCountdown from '../../hooks/useRedirectCountdown';
 
 function Erro() {
+    // Usa o hook para redirecionar a página de erro após 5 segundos
     const seconds = useRedirectCountdown(5, '/');
 
     return (

@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
+// Configuração do Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyCXY1EACn5FdmZwUrPOdTP4u-dSG7lfRJw",
     authDomain: "lista-de-tarefas-a7d89.firebaseapp.com",
@@ -13,6 +14,7 @@ const firebaseConfig = {
 
 class FirebaseService {
     constructor() {
+        // Implementa o padrão Singleton para garantir que apenas uma instância do FirebaseService seja criada
         if (!FirebaseService.instance) {
             const app = initializeApp(firebaseConfig);
             this.auth = getAuth(app);
@@ -23,6 +25,7 @@ class FirebaseService {
     }
 }
 
+// Cria uma instância única do FirebaseService
 const instance = new FirebaseService();
 Object.freeze(instance);
 

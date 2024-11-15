@@ -1,3 +1,4 @@
+// Função para formatar a data
 export function formatDate(timestamp) {
     if (!timestamp || !timestamp.seconds) {
         return 'Data inválida';

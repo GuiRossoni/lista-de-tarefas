@@ -4,11 +4,13 @@ import AuthForm from '../../components/AuthForm';
 import ServiceFacade from '../../services/ServiceFacade';
 
 function SignupPage() {
+    // Define os estados para email, senha e erro
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
+    // Função para o cadastro
     const handleSignup = async (e) => {
         e.preventDefault();
         try {

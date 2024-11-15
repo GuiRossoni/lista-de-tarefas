@@ -4,6 +4,7 @@ import { Delete, Edit } from '@mui/icons-material';
 import { formatDate } from './dateUtils';
 
 function Task({ taskData, onEdit, onDelete, onToggleCompletion }) {
+    // Formata a data da tarefa
     const formattedDate = formatDate(taskData.data.timestamp);
 
     return (

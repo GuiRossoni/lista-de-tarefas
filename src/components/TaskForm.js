@@ -3,6 +3,7 @@ import { TextField, Button } from '@mui/material';
 import useTaskForm from '../hooks/useTaskForm';
 
 function TaskForm({ onSubmit, editTask, clearEdit }) {
+    // Usa o hook useTaskForm para gerenciar o estado do formulário
     const { taskInput, setTaskInput, handleSubmit } = useTaskForm(onSubmit, editTask, clearEdit);
 
     return (
